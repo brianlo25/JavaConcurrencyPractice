@@ -13,7 +13,7 @@ public class RecordQuery {
         this.connection = connection;
     }
 
-    public <T> T query(RoeHandler<T> handler, String sql, Object...params) throws SQLException {
+    public <T> T query(RowHandler<T> handler, String sql, Object...params) throws SQLException {
         try(PreparedStatement stmt = connection.prepareStatement(sql))
         {
             int index = 1;

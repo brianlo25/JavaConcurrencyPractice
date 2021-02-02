@@ -2,6 +2,6 @@ package concrurrency.chapter01;
 
 import java.sql.ResultSet;
 
-public interface RoeHandler<T> {
+public interface RowHandler<T> {
     T handle(ResultSet rs);
 }

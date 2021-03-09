@@ -1,5 +1,7 @@
 package concrurrency.chapter08;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,7 +20,7 @@ public class BasicThreadPool extends Thread implements  ThreadPool{
 
     private volatile boolean isShutdown = false;
 
-//    private final Queue<> threadQueue = new ArrayDeque<>();
+    private final Queue<ThreadTask> threadQueue = new ArrayDeque<>();
 
     private final static DenyPolicy DEFAULT_DENY_POLICY = new DenyPolicy.DiscardDenyPolicy();
 
@@ -45,7 +47,11 @@ public class BasicThreadPool extends Thread implements  ThreadPool{
     }
 
     private void init(){
+        start();
 
+        for (int i=0; i<initSize; i++){
+            newThread();
+        }
     }
 
     @Override
@@ -58,11 +64,74 @@ public class BasicThreadPool extends Thread implements  ThreadPool{
 
     @Override
     public void shutdown() {
-
+        synchronized (this){
+            if (isShutdown) return;
+            isShutdown = true;
+            threadQueue.forEach(threadTask -> {
+                threadTask.internalTask.stop();
+                threadTask.thread.interrupt();
+            });
+            this.interrupt();
+        }
     }
 
     private void newThread(){
         InternalTask internalTask = new InternalTask(runnableQueue);
+        Thread thread = this.threadFactory.createThread(internalTask);
+        ThreadTask threadTask = new ThreadTask(thread, internalTask);
+        threadQueue.offer(threadTask);
+        this.activeCount++;
+        thread.start();
+    }
+
+    private void removeThread(){
+        ThreadTask threadTask = threadQueue.remove();
+        threadTask.internalTask.stop();
+        this.activeCount--;
+    }
+
+    @Override
+    public void run() {
+       while (!isShutdown && !isInterrupted()){
+        try {
+            timeUnit.sleep(keepAliveTime);
+        } catch (InterruptedException e) {
+            isShutdown = true;
+            break;
+        }
+
+        synchronized (this){
+            if (isShutdown){
+                break;
+            }
+            if (runnableQueue.size() > 0 && activeCount < coreSize){
+                for (int i = initSize; i < coreSize; i++){
+                    newThread();
+                }
+                continue;
+            }
+            if (runnableQueue.size() > 0 && activeCount < maxSize){
+                for (int i = initSize; i < maxSize; i++){
+                    newThread();
+                }
+                continue;
+            }
+            if (runnableQueue.size() == 0 && activeCount > coreSize){
+                for (int i = coreSize; i < activeCount; i++){
+                    removeThread();
+                }
+            }
+        }
+       }
+    }
+
+    private static class ThreadTask{
+        Thread thread;
+        InternalTask internalTask;
+        public ThreadTask(Thread thread, InternalTask internalTask){
+            this.thread = thread;
+            this.internalTask = internalTask;
+        }
     }
 
     @Override

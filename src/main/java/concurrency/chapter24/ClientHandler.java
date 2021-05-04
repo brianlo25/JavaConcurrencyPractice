@@ -15,7 +15,25 @@ public class ClientHandler implements Runnable{
 
     @Override
     public void run() {
+        try {
+            this.chat();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            this.release();
+        }
+    }
 
+    private void release(){
+        try {
+            if (socket != null){
+                socket.close();
+            }
+        } catch (Throwable e) {
+            if (socket != null){
+                SocketCleaningTracker.track(socket);
+            }
+        }
     }
 
     public void chat() throws IOException {

@@ -12,8 +12,8 @@ public class ActiveDaemonThread extends Thread{
     @Override
     public void run() {
         for (;;){
-            MethodMessage methodMessage = this.queue.take();
-            methodMessage.execute();
+            ActiveMessage activeMessage = this.queue.take();
+            activeMessage.execute();
         }
     }
 }

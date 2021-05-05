@@ -22,7 +22,7 @@ public class OrderServiceProxy implements OrderService{
         params.put("orderId", orderId);
         params.put("activeFuture", activeFuture);
         MethodMessage message = new FindOrderDetailsMessage(params, orderService);
-        activeMessageQueue.offer(message);
+//        activeMessageQueue.offer(message);
         return activeFuture;
     }
 
@@ -32,6 +32,6 @@ public class OrderServiceProxy implements OrderService{
         params.put("account", account);
         params.put("orderId", orderId);
         MethodMessage message = new OrderMessage(params, orderService);
-        activeMessageQueue.offer(message);
+//        activeMessageQueue.offer(message);
     }
 }

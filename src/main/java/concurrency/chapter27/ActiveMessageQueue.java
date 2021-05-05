@@ -3,20 +3,20 @@ package concurrency.chapter27;
 import java.util.LinkedList;
 
 public class ActiveMessageQueue {
-    private final LinkedList<MethodMessage> messages = new LinkedList<>();
+    private final LinkedList<ActiveMessage> messages = new LinkedList<>();
 
     public ActiveMessageQueue(){
         new ActiveDaemonThread(this).start();
     }
 
-    public void offer(MethodMessage methodMessage){
+    public void offer(ActiveMessage activeMessage){
         synchronized (this){
-            messages.addLast(methodMessage);
+            messages.addLast(activeMessage);
             this.notify();
         }
     }
 
-    public MethodMessage take(){
+    public ActiveMessage take(){
         synchronized (this){
             while (messages.isEmpty()){
                 try {

@@ -19,7 +19,7 @@ public class AlarmAgent {
 
     private final Timer heartbeatTimer = new Timer(true);
 
-    public void sendAlarm(final String alarmInfo) throws Exception{
+    public void sendAlarm(final AlarmInfo alarmInfo) throws Exception{
         GuardedAction<Void> guardedAction = new GuardedAction<Void>(agentConnected) {
             @Override
             public Void call() throws Exception {
@@ -31,8 +31,8 @@ public class AlarmAgent {
         blocker.callWithGuard(guardedAction);
     }
 
-    private void doSendAlarm(String alarmInfo){
-        System.out.println("Sending alarm " + alarmInfo);
+    private void doSendAlarm(AlarmInfo alarmInfo){
+        System.out.println("Sending alarm " + alarmInfo.getExtraInfo());
         try {
             TimeUnit.SECONDS.sleep(50);
         } catch (InterruptedException e) {

@@ -1,4 +1,4 @@
-package concurrentpackage.jmh;
+package concurrentcore.jmh;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

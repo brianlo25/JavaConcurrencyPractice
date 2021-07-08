@@ -1,4 +1,4 @@
-package concurrentpackage.jmh;
+package concurrentcore.jmh;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
@@ -6,8 +6,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
@@ -16,34 +14,32 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Thread)
-public class JMHExample11 {
+public class JMHExample13 {
 
-    private List<String> list;
+    @Benchmark
+    public void baseline(){
 
-    @Setup
-    public void setUp(){
-        this.list = new ArrayList<>();
     }
 
     @Benchmark
-    public void measureRight(){
-        this.list.add("Test");
+    public void measureLog1(){
+        Math.log(Math.PI);
     }
 
     @Benchmark
-    public void measureWrong(){
-
+    public void measureLog2(){
+        double result = Math.log(Math.PI);
+        Math.log(result);
     }
 
-    @TearDown
-    public void tearDown(){
-        assert this.list.size() > 0 : "The list elements must greater than zero";
+    @Benchmark
+    public double measureLog3(){
+        return Math.log(Math.PI);
     }
 
     public static void main(String[] args) throws RunnerException {
         final Options options = new OptionsBuilder()
-                .include(JMHExample11.class.getSimpleName())
-                .jvmArgs("-ea")
+                .include(JMHExample13.class.getSimpleName())
                 .build();
         new Runner(options).run();
     }

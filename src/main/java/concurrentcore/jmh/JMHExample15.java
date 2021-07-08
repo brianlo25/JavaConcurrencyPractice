@@ -1,4 +1,4 @@
-package concurrentpackage.jmh;
+package concurrentcore.jmh;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
@@ -14,23 +14,37 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Thread)
-public class JMHExample12 {
+public class JMHExample15 {
 
-    @CompilerControl(CompilerControl.Mode.EXCLUDE)
+    private final double x1 = 124.456;
+    private final double x2 = 342.456;
+
+    private double y1 = 124.456;
+    private double y2 = 342.456;
+
     @Benchmark
-    public void test1(){
-
+    public double returnDirect(){
+        return 42620.703936d;
     }
 
-    @CompilerControl(CompilerControl.Mode.EXCLUDE)
     @Benchmark
-    public void test2(){
-        Math.log(Math.PI);
+    public double returnCalculate_1(){
+        return x1 * x2;
+    }
+
+    @Benchmark
+    public double returnCalculate_2(){
+        return Math.log(y1) * Math.log(y2);
+    }
+
+    @Benchmark
+    public double returnCalculate_3(){
+        return Math.log(x1) * Math.log(x2);
     }
 
     public static void main(String[] args) throws RunnerException {
         final Options options = new OptionsBuilder()
-                .include(JMHExample12.class.getSimpleName())
+                .include(JMHExample15.class.getSimpleName())
                 .build();
         new Runner(options).run();
     }

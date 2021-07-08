@@ -1,6 +1,7 @@
-package concurrentpackage.jmh;
+package concurrentcore.jmh;
 
 import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.profile.StackProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Group)
-public class JMHExample19 {
+public class JMHExample21 {
 
     private BlockingQueue<Integer> queue;
 
@@ -44,10 +45,10 @@ public class JMHExample19 {
 
     public static void main(String[] args) throws RunnerException {
         final Options options = new OptionsBuilder()
-                .include(JMHExample19.class.getSimpleName())
+                .include(JMHExample21.class.getSimpleName())
                 .timeout(TimeValue.seconds(10))
+                .addProfiler(StackProfiler.class)
                 .build();
         new Runner(options).run();
     }
-
 }

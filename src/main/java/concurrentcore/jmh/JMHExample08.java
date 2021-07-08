@@ -1,4 +1,4 @@
-package concurrentpackage.jmh;
+package concurrentcore.jmh;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
@@ -13,29 +13,41 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 5)
 @Measurement(iterations = 10)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
-@Threads(5)
-public class JMHExample07 {
+public class JMHExample08 {
 
-    @State(Scope.Benchmark)
+    @State(Scope.Group)
     public static class Test{
 
         public Test(){
             System.out.println("create instance");
         }
 
-        public void method(){
+        public void write(){
+            System.out.println("write");
+        }
 
+        public void read(){
+            System.out.println("read");
         }
     }
 
+    @GroupThreads(3)
+    @Group("test")
     @Benchmark
-    public void test(Test test){
-        test.method();
+    public void testWrite(Test test){
+        test.write();
+    }
+
+    @GroupThreads(3)
+    @Group("test")
+    @Benchmark
+    public void testRead(Test test){
+        test.read();
     }
 
     public static void main(String[] args) throws RunnerException {
         final Options options = new OptionsBuilder()
-                .include(JMHExample07.class.getSimpleName())
+                .include(JMHExample08.class.getSimpleName())
                 .build();
         new Runner(options).run();
     }

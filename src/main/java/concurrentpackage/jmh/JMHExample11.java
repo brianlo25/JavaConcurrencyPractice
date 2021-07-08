@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
-@Threads(5)
 @State(Scope.Thread)
 public class JMHExample11 {
 
@@ -48,4 +47,5 @@ public class JMHExample11 {
                 .build();
         new Runner(options).run();
     }
+
 }

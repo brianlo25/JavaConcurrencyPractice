@@ -14,23 +14,32 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 5, time = 1)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Thread)
-public class JMHExample12 {
+public class JMHExample13 {
 
-    @CompilerControl(CompilerControl.Mode.EXCLUDE)
     @Benchmark
-    public void test1(){
+    public void baseline(){
 
     }
 
-    @CompilerControl(CompilerControl.Mode.EXCLUDE)
     @Benchmark
-    public void test2(){
+    public void measureLog1(){
         Math.log(Math.PI);
+    }
+
+    @Benchmark
+    public void measureLog2(){
+        double result = Math.log(Math.PI);
+        Math.log(result);
+    }
+
+    @Benchmark
+    public double measureLog3(){
+        return Math.log(Math.PI);
     }
 
     public static void main(String[] args) throws RunnerException {
         final Options options = new OptionsBuilder()
-                .include(JMHExample12.class.getSimpleName())
+                .include(JMHExample13.class.getSimpleName())
                 .build();
         new Runner(options).run();
     }

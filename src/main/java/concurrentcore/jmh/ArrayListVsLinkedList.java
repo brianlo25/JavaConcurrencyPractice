@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ArrayListVSLinkedList {
+public class ArrayListVsLinkedList {
     private final static String DATA = "DUMMY DATA";
 
     private final static int MAX_CAPACITY = 1000000;

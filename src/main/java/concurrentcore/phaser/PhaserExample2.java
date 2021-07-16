@@ -27,6 +27,6 @@ public class PhaserExample2 {
         phaser.arriveAndAwaitAdvance();
 
         assert phaser.getRegisteredParties() == 11 : "total 11 parties is registered.";
-        System.out.println(new Date() + ": all of sub task completed work.");
+        System.out.println(new Date() + ": all of sub task completed.");
     }
 }

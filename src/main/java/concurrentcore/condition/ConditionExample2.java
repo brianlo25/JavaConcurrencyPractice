@@ -30,7 +30,7 @@ public class ConditionExample2 {
             i++;
             list.addLast(i);
             System.out.println(Thread.currentThread().getName() + "->" + i);
-            FULL_CONDITION.signalAll();
+            EMPTY_CONDITION.signalAll();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -46,7 +46,7 @@ public class ConditionExample2 {
             }
             Long value = list.removeFirst();
             System.out.println(Thread.currentThread().getName() + "->" + value);
-            EMPTY_CONDITION.signalAll();
+            FULL_CONDITION.signalAll();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

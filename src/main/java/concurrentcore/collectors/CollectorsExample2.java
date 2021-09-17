@@ -7,14 +7,7 @@ import java.util.stream.Stream;
 public class CollectorsExample2 {
     public static void main(String[] args) {
         // 傳統方法
-        List<Production> list = Arrays.asList(
-                new Production("T-Shirt", 43.34d),
-                new Production("cloth", 99.99d),
-                new Production("shoe", 123.8d),
-                new Production("hat", 26.5d),
-                new Production("cloth", 199.99d),
-                new Production("shoe", 32.5d)
-        );
+        List<Production> list = CollectionUtils.returnList();
 
         final Map<String, Double> prodPrice = new HashMap<>();
 
@@ -36,18 +29,10 @@ public class CollectorsExample2 {
         System.out.println(prodPrice.get("hat") == 26.5d);
 
         // stream方法
-        Stream<Production> stream = Stream.of(
-                new Production("T-Shirt", 43.34d),
-                new Production("cloth", 99.99d),
-                new Production("shoe", 123.8d),
-                new Production("hat", 26.5d),
-                new Production("cloth", 199.99d),
-                new Production("shoe", 32.5d)
-        );
+        Stream<Production> stream = CollectionUtils.returnStream();
 
-        Map<String, DoubleSummaryStatistics> groupingPrice = stream.collect(Collectors.groupingBy(
-                Production::getName,
-                Collectors.summarizingDouble(Production::getPrice)));
+        Map<String, DoubleSummaryStatistics> groupingPrice = stream
+                .collect(Collectors.groupingBy(Production::getName, Collectors.summarizingDouble(Production::getPrice)));
 
         System.out.println(groupingPrice.size() == 4);
         System.out.println(groupingPrice.get("T-Shirt").getSum() == 43.34d);

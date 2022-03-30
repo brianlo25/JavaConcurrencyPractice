@@ -1,22 +1,24 @@
-package javaconcurrency.chapter05;
+package javaconcurrency.chapter05.waitAndNotify;
 
 import java.util.Queue;
 
-public class Consumer implements Runnable{
+public class Producer implements Runnable{
     private Queue<String> bags;
     private int maxSize;
 
-    public Consumer(Queue<String> bags, int maxSize) {
+    public Producer(Queue<String> bags, int maxSize) {
         this.bags = bags;
         this.maxSize = maxSize;
     }
 
     @Override
     public void run() {
+        int i = 0;
         while (true) {
+            i++;
             synchronized (bags) {
-                if (bags.isEmpty()) {
-                    System.out.println("bags為空");
+                if (bags.size() == maxSize) {
+                    System.out.println("bags 滿了");
                     try {
                         bags.wait();
                     } catch (InterruptedException e) {
@@ -28,8 +30,8 @@ public class Consumer implements Runnable{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                String bag = bags.remove();
-                System.out.println("消費者消費 : " + bag);
+                System.out.println("生產者生產 : bag" + i);
+                bags.add("bag" + i);
                 bags.notify();
             }
         }

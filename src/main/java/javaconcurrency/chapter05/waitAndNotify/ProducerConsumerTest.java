@@ -1,4 +1,4 @@
-package javaconcurrency.chapter05;
+package javaconcurrency.chapter05.waitAndNotify;
 
 import java.util.LinkedList;
 import java.util.Queue;

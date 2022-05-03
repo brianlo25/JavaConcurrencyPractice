@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import javaconcurrency.chapter06.countDownLatch.ApplicationStartUp;
+import com.example.demo.javaconcurrency.chapter06.countDownLatch.ApplicationStartUp;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
